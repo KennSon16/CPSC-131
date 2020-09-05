@@ -11,7 +11,7 @@ int main() {
     std::string_view  userIsbn;
     std::string_view  userTitle;
     std::string_view  userAuthor;
-    std::double       user Price;
+    double       userPrice;
     std::vector<Book> bookStuff;
     //create pointer that points at the four stuff
     //while loop to add to take in strings and int for each book
