@@ -9,8 +9,13 @@
 
 int main() {
   Book myBook;
-  std::string comma = ", ";
-  
+  Book myBoo2;
+  std::cout << std::showpoint << std::fixed << std::setprecision(2);
+  std::cout << "Welcome to Forgotten Books, a bookstore filled with books from all nations.  Place books into your shopping cart by entering each book's information." << std::endl;
+  std::cout << "  enclose string entries in quotes, separate fields with comas" << std::endl;
+  std::cout << "  Enter CTL-Z (Windows) or CTL-D (Linux) to quit." << std::endl;
+  std::cin >> myBook;
+  std::cout << myBook << std::endl;
   std::cin >> myBook;
   std::cout << myBook << std::endl;
   return 0;
