@@ -1,26 +1,32 @@
-#include <iosteam>
-//#include "Book.hpp"
+#include <iostream>
+#include <iomanip>
+#include "Book.hpp"
 
 
 //Insertion and Extraction Operators
 // use std::quoted()
 std::ostream & operator<<( std::ostream & stream, const Book & book ) {
-  stream << book -> isbn() << book -> title() << book -> author() << book -> price() << endl;
+const std::string delim =", " ;
+  stream  << std::quoted( book.isbn()   ) << delim
+          << std::quoted( book.title()  ) << delim
+          << std::quoted( book.author() ) << delim
+          << book.price();
   return stream;
 }
 std::istream & operator>>( std::istream & stream,       Book & book ) {
-  stream >> std::quoted(book._isbn);
-  stream >> book._title;
-  stream >> book._author;
-  stream >> book._price;
+  char delim = ',';
+  stream  >> std::quoted(book._isbn)    >> delim
+          >> std::quoted(book._title)   >> delim
+          >> std::quoted(book._author)  >> delim
+          >> book._price;
   return stream;
 }
-// Book::Book(std::string_view title, std::string_view author, std::string_view isbn, double price) {
-//    this-> _isbn = newIsbn;
-//    this-> _title = newTitle;
-//    this-> _author = newAuthor;
-//    this-> _price = newPrice;
-//  }
+Book::Book(std::string_view title, std::string_view author, std::string_view isbn, double price) {
+   this-> _isbn = isbn;
+   this-> _title = title;
+   this-> _author = author;
+   this-> _price = price;
+ }
 // Queries
 std::string Book::isbn  () const{
   return this -> _isbn;
@@ -31,7 +37,7 @@ std::string Book::title () const {
 std::string Book::author() const{
   return this-> _author;
 }
-std::double Book::price () const{
+double Book::price () const{
   return this-> _price;
 }
 
@@ -52,7 +58,7 @@ void Book::price ( double newPrice  ) {
 //bool 6 checklist check    compare ISBN, author, title, price
 // Relational Operators
 bool operator==( const Book & lhs, const Book & rhs ) {
-  if ( (lhs -> isbn() == rhs -> isbn()) && (lhs -> author() == rhs -> author()) && (lhs -> title() == rhs -> title()) && (lhs -> price() == rhs -> price()) ) {
+  if ( (lhs.isbn() == rhs.isbn()) && (lhs.author() == rhs.author()) && (lhs.title() == rhs.title()) && (lhs.price() == rhs.price()) ) {
     return true;
   }
   return false;
@@ -60,7 +66,7 @@ bool operator==( const Book & lhs, const Book & rhs ) {
 
 bool operator!=( const Book & lhs, const Book & rhs ) {
   bool test = false;
-  if ( (lhs -> isbn() != rhs -> isbn()) || (lhs -> author() != rhs -> author()) || (lhs -> title() != rhs -> title()) || (lhs -> price() != rhs -> price()) ) {
+  if ( (lhs.isbn() != rhs.isbn()) || (lhs.author() != rhs.author()) || (lhs.title() != rhs.title()) || (lhs.price() != rhs.price()) ) {
     return true;
   }
   return false;
@@ -68,7 +74,7 @@ bool operator!=( const Book & lhs, const Book & rhs ) {
 
 bool operator< ( const Book & lhs, const Book & rhs ){
   bool test = false;
-  if ( (lhs -> isbn() < rhs -> isbn()) && (lhs -> author() < rhs -> author()) && (lhs -> title() < rhs -> title()) && (lhs -> price() < rhs -> price()) ) {
+  if ( (lhs.isbn() < rhs.isbn()) && (lhs.author() < rhs.author()) && (lhs.title() < rhs.title()) && (lhs.price() < rhs.price()) ) {
     return true;
   }
   return false;
@@ -76,7 +82,7 @@ bool operator< ( const Book & lhs, const Book & rhs ){
 
 bool operator<=( const Book & lhs, const Book & rhs ){
   bool test = false;
-  if ( (lhs -> isbn() <= rhs -> isbn()) && (lhs -> author() <= rhs -> author()) && (lhs -> title() <= rhs -> title()) && (lhs -> price() <= rhs -> price()) ) {
+  if ( (lhs.isbn() <= rhs.isbn()) && (lhs.author() <= rhs.author()) && (lhs.title() <= rhs.title()) && (lhs.price() <= rhs.price()) ) {
     return true;
   }
   return false;
@@ -84,7 +90,7 @@ bool operator<=( const Book & lhs, const Book & rhs ){
 
 bool operator> ( const Book & lhs, const Book & rhs ){
   bool test = false;
-  if ( (lhs -> isbn() > rhs -> isbn()) && (lhs -> author() > rhs -> author()) && (lhs -> title() > rhs -> title()) && (lhs -> price() > rhs -> price()) ) {
+  if ( (lhs.isbn() > rhs.isbn()) && (lhs.author() > rhs.author()) && (lhs.title() > rhs.title()) && (lhs.price() > rhs.price()) ) {
     return true;
   }
   return false;
@@ -92,7 +98,7 @@ bool operator> ( const Book & lhs, const Book & rhs ){
 
 bool operator>=( const Book & lhs, const Book & rhs ){
   bool test = false;
-  if ( (lhs -> isbn() >= rhs -> isbn()) && (lhs -> author() >= rhs -> author()) && (lhs -> title() >= rhs -> title()) && (lhs -> price() >= rhs -> price()) ) {
+  if ( (lhs.isbn() >= rhs.isbn()) && (lhs.author() >= rhs.author()) && (lhs.title() >= rhs.title()) && (lhs.price() >= rhs.price()) ) {
     return true;
   }
   return false;
