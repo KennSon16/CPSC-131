@@ -66,7 +66,6 @@ void Book::price ( double newPrice  ) {
 //bool 6 checklist check    compare ISBN, author, title, price
 // Relational Operators
 bool operator==( const Book & lhs, const Book & rhs ) {
-
   if      ( (lhs.isbn()   ==  rhs.isbn()  )
       &&  (lhs.author()   ==  rhs.author())
       &&  (lhs.title()    ==  rhs.title() )
@@ -77,37 +76,32 @@ bool operator==( const Book & lhs, const Book & rhs ) {
 }
 
 bool operator!=( const Book & lhs, const Book & rhs ) {
-  if ( (lhs.isbn() != rhs.isbn()) || (lhs.author() != rhs.author()) || (lhs.title() != rhs.title()) || (lhs.price() != rhs.price()) ) {
+  if      ( (lhs.isbn() !=  rhs.isbn())
+      ||  (lhs.author() !=  rhs.author())
+      ||  (lhs.title()  !=  rhs.title())
+      ||  (std::abs(lhs.price() - rhs.price()) > EPSILON ) ) {
     return true;
   }
   return false;
 }
 
 bool operator< ( const Book & lhs, const Book & rhs ){
-  if ( (lhs.isbn() < rhs.isbn()) && (lhs.author() < rhs.author()) && (lhs.title() < rhs.title()) && (lhs.price() < rhs.price()) ) {
-    return true;
-  }
+
+  if(auto result = lhs._isbn.compare   ( rhs._isbn   ); result != 0) return result < 0;
+  if(auto result = lhs._author.compare ( rhs._author ); result != 0) return result < 0;
+  if(auto result = lhs._title.compare  ( rhs._title  ); result != 0) return result < 0;
+  if(std::abs( lhs._price - rhs._price ) >= EPSILON ) return (lhs._price < rhs._price);
   return false;
 }
 
 bool operator<=( const Book & lhs, const Book & rhs ){
-  if ( (lhs.isbn() <= rhs.isbn()) && (lhs.author() <= rhs.author()) && (lhs.title() <= rhs.title()) && (lhs.price() <= rhs.price()) ) {
-    return true;
-  }
-  return false;
+  return !( rhs < lhs );
 }
 
 bool operator> ( const Book & lhs, const Book & rhs ){
-  if ( (lhs.isbn() > rhs.isbn()) && (lhs.author() > rhs.author()) && (lhs.title() > rhs.title()) && (lhs.price() > rhs.price()) ) {
-    return true;
-  }
-  return false;
+  return  ( rhs < lhs );
 }
 
 bool operator>=( const Book & lhs, const Book & rhs ){
-  bool test = false;
-  if ( (lhs.isbn() >= rhs.isbn()) && (lhs.author() >= rhs.author()) && (lhs.title() >= rhs.title()) && (lhs.price() >= rhs.price()) ) {
-    return true;
-  }
-  return false;
+  return !( lhs < rhs  );
 }
