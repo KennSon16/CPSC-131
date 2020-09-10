@@ -27,6 +27,6 @@ int main() {
 
   for(unsigned long int i = books.size(); i > 0; --i) {
     std::cout << *books[i-1] << '\n';
-  }
+  }//project 0 finished here
   return 0;
 }
