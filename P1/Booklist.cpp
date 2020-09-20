@@ -64,12 +64,19 @@ bool BookList::containersAreConsistant() const
 std::size_t BookList::books_sl_list_size() const
 {
   ///////////////////////// TO-DO (1) //////////////////////////////
-    /// Some implementations of a singly linked list maintain the size (number of elements in the list).  std::forward_list does
-    /// not. The size of singly linked list must be calculated on demand by walking the list from beginning to end counting the
-    /// number of elements visited.  The STL's std::distance() function does that, or you can write your own loop.
+  /// Some implementations of a singly linked list maintain the size (number of elements in the list).  std::forward_list does
+  /// not. The size of singly linked list must be calculated on demand by walking the list from beginning to end counting the
+  /// number of elements visited.  The STL's std::distance() function does that, or you can write your own loop.
+  int counter = 0;
 
+  for (auto i = _books_sl_list.begin(); i != _books_sl_list.end(); ++i )
+  {
+    counter++;
+  }
+  return counter;
   /////////////////////// END-TO-DO (1) ////////////////////////////
 }
+
 
 
 
@@ -135,7 +142,7 @@ BookList & BookList::operator+=( const BookList & rhs )
     /// All the rhs containers (array, vector, list, and forward_list) contain the same information, so pick just one to traverse.
     /// Walk the container you picked inserting its books to the bottom of this book list. Use BookList::insert() to insert at the
     /// bottom.
-
+    for (auto i = 0; )
   /////////////////////// END-TO-DO (3) ////////////////////////////
 
   // Verify the internal book list state is still consistent amongst the four containers
@@ -160,7 +167,7 @@ std::size_t BookList::size() const
   ///////////////////////// TO-DO (4) //////////////////////////////
     /// All the containers are the same size, so pick one and return the size of that.  Since the forward_list has to calculate the
     /// size on demand, stay away from using that one.
-
+    return _books_array_size;
   /////////////////////// END-TO-DO (4) ////////////////////////////
 }
 
@@ -176,7 +183,10 @@ std::size_t BookList::find( const Book & book ) const
     /// size of this book list as an indicator the book does not exist.  The book will be in the same position in all the containers
     /// (array, vector, list, and forward_list) so pick just one of those to search.  The STL provides the find() function that is a
     /// perfect fit here, but you may also write your own loop.
+  std::vector<Book>::const_iterator it = std::find(_books_vector.begin(), _books_vector.end(), book);
+  return it - _books_vector.begin() ;
 
+   // this will go through each index of the array to find what index the book is at.
   /////////////////////// END-TO-DO (5) ////////////////////////////
 }
 
@@ -216,7 +226,13 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
   ///////////////////////// TO-DO (6) //////////////////////////////
     /// Silently discard duplicate items from getting added to the book list.  If the to-be-inserted book is already in the list,
     /// simply return.
-
+  for (auto i = 0; i < _books_array.size(); ++i)
+  {
+    if (_books_array.at(i) == book)
+    {
+      return;
+    }
+  }
   /////////////////////// END-TO-DO (6) ////////////////////////////
 
 
@@ -244,7 +260,13 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
       ///
       /// See function FixedVector::insert() in FixedVector.hpp in our Sequence Container Implementation Examples, and
       /// RationalArray::insert() in RationalArray.cpp in our Rational Number Case Study examples.
-
+    if (_books_array_size < _books_array.size()) throw CapacityExceeded_Ex("More books are inserted then amount of space" exception_location);
+    for (auto i = _books_array.size(); i > offsetFromTop; --i)
+    {
+      _books_array.at(i)=_books_array.at(i - 1);
+    }
+    _books_array.at(offsetFromTop) = book;
+    _books_array_size++;
     /////////////////////// END-TO-DO (7) ////////////////////////////
   }  // Insert into array
 
@@ -261,6 +283,7 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
       /// Behind the scenes, std::vector::insert() shifts to the right everything at and after the insertion point, just like you
       /// did for the array above.
 
+      _books_vector.insert(std::next(_books_vector.begin(), offsetFromTop), book);
     /////////////////////// END-TO-DO (8) ////////////////////////////
   } // Insert into vector
 
@@ -273,7 +296,7 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
       /// takes a pointer (or more accurately, an iterator) that points to the book to insert before.  You need to convert the
       /// zero-based offset from the top to an iterator by advancing _books_dl_list.begin() offsetFromTop times.  The STL has a
       /// function called std::next() that does that, or you can write your own loop.
-
+      _books_dl_list.insert(std::next(_books_dl_list.begin(), offsetFromTop), book);
     /////////////////////// END-TO-DO (9) ////////////////////////////
   } // Insert into doubly linked list
 
@@ -287,7 +310,7 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
       /// backwards, only forward.  You need to convert the zero-based offset from the top to an iterator by advancing
       /// _books_sl_list.before_begin() offsetFromTop times.  The STL has a function called std::next() that does that, or you can
       /// write your own loop.
-
+      _books_sl_list.insert_after(std::next(_books_sl_list.before_begin(), offsetFromTop), book);
     /////////////////////// END-TO-DO (10) ////////////////////////////
   } // Insert into singly linked list
 
@@ -431,7 +454,7 @@ std::istream & operator>>( std::istream & stream, BookList & bookList )
   if( !bookList.containersAreConsistant() ) throw BookList::InvalidInternalState_Ex( "Container consistency error" exception_location );
 
   for( Book book; stream >> book; )   bookList.insert( book, BookList::Position::BOTTOM );
-  
+
   return stream;
 }
 
