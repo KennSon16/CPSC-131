@@ -125,7 +125,10 @@ BookList & BookList::operator+=( const std::initializer_list<Book> & rhs )
     /// Concatenate the right hand side book list of books to this list by repeatedly inserting at the bottom of this book list.
     /// The input type is a container of books accessible with iterators like all the other containers.  The constructor above gives
     /// an example.  Use BookList::insert() to insert at the bottom.
-
+  for( auto &b : rhs )
+    {
+      this->insert(b, _books_array_size);
+    }
   /////////////////////// END-TO-DO (2) ////////////////////////////
 
   // Verify the internal book list state is still consistent amongst the four containers
@@ -142,7 +145,11 @@ BookList & BookList::operator+=( const BookList & rhs )
     /// All the rhs containers (array, vector, list, and forward_list) contain the same information, so pick just one to traverse.
     /// Walk the container you picked inserting its books to the bottom of this book list. Use BookList::insert() to insert at the
     /// bottom.
-    for (auto i = 0; )
+    for (auto i = 0; i < rhs._books_vector.size(); i++)
+    {
+      this->insert(rhs._books_vector.at(i), _books_array_size);
+    }
+
   /////////////////////// END-TO-DO (3) ////////////////////////////
 
   // Verify the internal book list state is still consistent amongst the four containers
@@ -260,8 +267,10 @@ void BookList::insert( const Book & book, std::size_t offsetFromTop )       // i
       ///
       /// See function FixedVector::insert() in FixedVector.hpp in our Sequence Container Implementation Examples, and
       /// RationalArray::insert() in RationalArray.cpp in our Rational Number Case Study examples.
-    if (_books_array_size < _books_array.size()) throw CapacityExceeded_Ex("More books are inserted then amount of space" exception_location);
-    for (auto i = _books_array.size(); i > offsetFromTop; --i)
+    // std::cout << _books_array_size << std::endl;
+    // std::cout << _books_array.size() << std::endl;
+    if (_books_array_size > _books_array.size()) throw CapacityExceeded_Ex("More books are inserted then amount of space" exception_location);
+    for (auto i = _books_array_size; i > offsetFromTop; --i)
     {
       _books_array.at(i)=_books_array.at(i - 1);
     }
@@ -347,7 +356,12 @@ void BookList::remove( std::size_t offsetFromTop )
       ///
       /// See function FixedVector<T>::erase() in FixedVector.hpp in our Sequence Container Implementation Examples, and
       /// RationalArray::remove() in RationalArray.cpp in our Rational Number Case Study examples.
-
+    for(auto i = 0; i < (_books_array_size - offsetFromTop - 1); ++i){
+      _books_array.at(offsetFromTop + i) = _books_array.at(offsetFromTop + i + 1);
+    }
+    _books_array.at(_books_array_size - 1) = {};
+    --_books_array_size;
+    //for(auto index = _books_array_size ; index != _books_array.size()- offsetFromTop; ++index) _books_array[index] = _books_array[index+offsetFromTop];
     /////////////////////// END-TO-DO (11) ////////////////////////////
   } // Remove from array
 
@@ -363,7 +377,7 @@ void BookList::remove( std::size_t offsetFromTop )
       ///
       /// Behind the scenes, std::vector::erase() shifts to the left everything after the insertion point, just like you did for the
       /// array above.
-
+    _books_vector.erase(_books_vector.begin() + offsetFromTop);
     /////////////////////// END-TO-DO (12) ////////////////////////////
   } // Remove from vector
 
@@ -376,7 +390,7 @@ void BookList::remove( std::size_t offsetFromTop )
       /// takes a pointer (or more accurately, an iterator) that points to the book to remove.  You need to convert the zero-based
       /// offset from the top to an iterator by advancing _books_dl_list.begin() offsetFromTop times.  The STL has a function called
       /// std::next() that does that, or you can write your own loop.
-
+    _books_dl_list.erase(std::next(_books_dl_list.begin(), offsetFromTop));
     /////////////////////// END-TO-DO (13) ////////////////////////////
   } // Remove from doubly linked list
 
@@ -390,7 +404,7 @@ void BookList::remove( std::size_t offsetFromTop )
       /// look backwards, only forward.  You need to convert the zero-based offset from the top to an iterator by advancing
       /// _books_sl_list.before_begin() offsetFromTop times.  The STL has a function called std::next() that does that, or you can
       /// write your own loop.
-
+    _books_sl_list.erase_after(std::next(_books_sl_list.before_begin(), offsetFromTop));
     /////////////////////// END-TO-DO (14) ////////////////////////////
   } // Remove from singly linked list
 
@@ -405,7 +419,11 @@ void BookList::moveToTop( const Book & book )
   ///////////////////////// TO-DO (15) //////////////////////////////
     /// If the book exists, then remove and reinsert it.  Else do nothing.  Use BookList::find() to determine if the book exists in
     /// this book list.
-
+  if  (find(book))
+  {
+    remove(book);
+    insert(book, 0);
+  }
   /////////////////////// END-TO-DO (15) ////////////////////////////
 }
 

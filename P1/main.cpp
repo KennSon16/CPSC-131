@@ -48,7 +48,6 @@ namespace
     // Time is short, let me take one off the list!
     booksToRead.remove( {"Secret Garden", "Frances Hodgson Burnett"} );
 
-
     // Now let's see what's on the list
     std::cout << "Combined Book Lists" << booksToRead << "\n\n";
 
@@ -85,8 +84,56 @@ int main()
     ///////////////////////// TO-DO (1) //////////////////////////////
      /// Create, manipulate, and display your own BookList object here.  Not looking for anything specific but expect you to
      /// demonstrate you can use the BookList class to create, update, and display the contents of a book list.
-     //Hmmmm... I want to add a book one to the end and one to the front
-     //I change my mind about Hunger Games 
+
+     // Let's start a book list for myself
+       BookList kennBooks = {{"Cat in the Hat"           },
+                             {"Namesake"                 },
+                             {"JoJo Bizzare Adventure" },
+                             {"Micky Mouse Club House"   }};
+      std::cout << '\n' << "Books intially in kennBooks: " << kennBooks << '\n' << '\n';
+     // I wanna look at what my group mates are reading
+       BookList stevenBooks =  {{"Simp City"                },
+                                {"Burn Me Alive"            },
+                                {"Japanese Horror Stories"  },
+                                {"18 Cowboys"               }};
+       std::cout << "Books in stevenBooks" << stevenBooks << '\n' << '\n';
+
+       BookList jongBook =  {{"Katy Perry Conspiracy Theories"  },
+                             {"Of Mice and Men"                 },
+                             {"The Bad Boys"                    }};
+       std::cout << "Books in jongBooks" << jongBook << '\n' << '\n';
+    //I want to add their books too my list!!
+      if( kennBooks != stevenBooks )
+      {
+         kennBooks += stevenBooks;
+      }
+      if( kennBooks != jongBook )
+      {
+        kennBooks += jongBook;
+      }
+    // Okay maybe I don't what all of their books...
+        kennBooks.remove( {"Simp City"} );
+        kennBooks.remove( {"18 Cowboys"} );
+    // Okay I think I might need this book.
+        kennBooks.insert({"How to stay awake in class", "Bob Ross"});
+    // I think I'll read this book first.
+        kennBooks.moveToTop({"How to stay awake in class", "Bob Ross"});
+    //Okay lets cout what we got
+        std::cout << "Books in kennBooks: "<< kennBooks << '\n' << '\n';
+      //   BookList expectedBooklist = {{"How to stay awake in class", "Bob Ross"},
+      //                                {"Cat in the Hat"                        },
+      //                                {"Namesake"                              },
+      //                                {"JoJo Bizzare Adventure"                },
+      //                                {"Micky Mouse Club House"                },
+      //                                {"Burn Me Alive"                         },
+      //                                {"Japanese Horror Stories"               },
+      //                                {"Katy Perry Conspiracy Theories"        },
+      //                                {"Of Mice and Men"                       },
+      //                                {"The Bad Boys"                          }};
+      // if (expectedBooklist == kennBooks)
+      // {
+      //   std::cout << "Yessir" << std::endl;
+      // } FOR TESTING PURPOSES
     /////////////////////// END-TO-DO (1) ////////////////////////////
   }
 

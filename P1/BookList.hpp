@@ -33,13 +33,13 @@ class BookList
 
     // Constructors, destructor, and assignment operators
     BookList();                                                                               // construct an empty book list
-                                                                                              
+
     BookList( const BookList  & other );                                                      // construct a book list as a copy of another book list
     BookList(       BookList && other );                                                      // construct a book list by taking the contents of another book list
-                                                                                              
+
     BookList & operator=( BookList    rhs );                                                  // intentionally passed by value and not const ref
-    BookList & operator=( BookList && rhs );                                                  
-                                                                                              
+    BookList & operator=( BookList && rhs );
+
     BookList             ( const std::initializer_list<Book> & initList );                    // constructs a book list from a braced list of books
     BookList & operator+=( const std::initializer_list<Book> & rhs      );                    // concatenates a braced list of books to this list
     BookList & operator+=( const BookList                    & rhs      );                    // concatenates the rhs list to the end of this list
@@ -56,7 +56,7 @@ class BookList
     // Mutators
     void insert( const Book & book, Position    position = Position::TOP );                   // add the book to the top (beginning) of the book list
     void insert( const Book & book, std::size_t offsetFromTop            );                   // inserts before the existing book currently at that offset
-                                                                                             
+
     void remove( const Book & book          );                                                // no change occurs if book not found
     void remove( std::size_t  offsetFromTop );                                                // no change occurs if (zero-based) offsetFromTop >= size()
 
