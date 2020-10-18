@@ -1,40 +1,49 @@
 #include <iostream>
-using namespace std;
+#include <iterator>
+#include <list>
+#include <string>
+#include <forward_list>
+#include <vector>
+int main()
+{
 
-int main(int argc, char const *argv[]) {
-  int * ptr = new int[5];
-  cout << ptr << endl;
-
-  for (int i = 0; i < 5; i++) {
-    cout << "curr i = " << i << endl;
-    cout << "curr ptr = " << ptr + i << endl;
-    cout << "curr element = " << *(ptr+i) << endl;
-  }
-
-  *(ptr+1) += 3;
-
-  for (int i = 0; i < 5; i++) {
-    cout << "curr i = " << i << endl;
-    cout << "curr ptr = " << ptr + i << endl;
-    cout << "curr element = " << *(ptr+i) << endl;
-  }
-
-  // cout << *(ptr + 5) << endl;
-
-  // *(ptr+5) += 3;
+  // std::list<std::string> zoo = {"Lion", "Tiger", "Monkey", "Weasel", "Elephant", "Giraffe", "Okapi"};
   //
-  // cout << *ptr << endl;
-
-  int *pt2 = ptr;
-  delete [] ptr;
-
-    for (int i = 0; i < 5; i++) {
-      cout << "curr i = " << i << endl;
-      cout << "curr ptr = " << pt2 + i << endl;
-      cout << "curr element = " << *(pt2+i) << endl;
-    }
+  // for (auto p = zoo.rbegin(); p != zoo.rend(); ++p) {
+  //   std::cout << *p << '\n';
+  //   if (std::next(p) != zoo.rend()) ++p;
+  // }
+  // // auto p = zoo.rend();
+  // // std::advance( p, -5 );
+  // // std::cout << *p << '\n';
 
 
 
-  return 0;
+ std::forward_list<std::string> desert = {"Cake", "Ice Cream", "Pudding", "Pizookie", "Apple Crisp", "S'mores", "Pie"};
+
+//std::cout << *( ++desert.begin() ) << '\n';
+std::cout << desert.rbegin()[4] << '\n';
+// std::cout << *( desert.crend() ) << '\n';
+// std::cout << desert[std::distance( desert.begin() + 1, desert.end() - 3 )] << '\n';
+// std::cout << *( std::next( desert.begin(), 3 ) ) << '\n';
+// auto p = desert.rend(); // syntax
+// std::advance( p, -5 );
+// std::cout << *p << '\n';
+
+
+//  std::vector<std::string> rainbow = {"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violette"};
+//  std::cout << *( rainbow.begin() + 2 ) << '\n';
+// std::cout << rainbow.rbegin()[3] << '\n';
+//  //std::cout << *( rainbow.cend() ) << '\n';
+//  // std::cout << *( rainbow.before_begin() ) << '\n'; //syntax
+//  std::cout << rainbow[std::distance( rainbow.begin() + 1, rainbow.end() - 2 )] << '\n';
+//  std::cout << *( std::next( rainbow.begin(), 5 ) ) << '\n';
+
+//  auto p = rainbow.end();
+// std::advance( p, -5 );
+// std::cout << *p << '\n';
+//
+// auto p = rainbow.rend();
+// std::advance( p, -2 );
+// std::cout << *p << '\n';
 }

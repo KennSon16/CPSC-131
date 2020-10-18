@@ -55,11 +55,15 @@ BookDatabase::BookDatabase( const std::string & filename )
     ///
     ///  Note: double quotes within the string are escaped with the backslash character
     ///
-    auto i = 0;
-    while (!fin.eof())
-    {
-      std::cin >> _book_database.at(i);
-      i++;
+    // auto i = 0;
+    // while (!fin.eof())
+    // {
+    //   std::cin >> _book_database.at(i);
+    //   i++;
+    // }
+    Book dBook;
+    while (fin >> dBook){
+      _book_database.push_back(dBook);
     }
   /////////////////////// END-TO-DO (2) ////////////////////////////
 
