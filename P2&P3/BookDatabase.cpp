@@ -1,6 +1,11 @@
 ///////////////////////// TO-DO (1) //////////////////////////////
   /// Include necessary header files
   /// Hint:  Include what you use, use what you include
+#include "Book.hpp"
+#include "BookDatabase.hpp"
+#include <iostream>
+#include <fstream>
+#include <filesystem>
 
 /////////////////////// END-TO-DO (1) ////////////////////////////
 
@@ -13,8 +18,8 @@ BookDatabase & BookDatabase::instance()
   // Don't forget to #include <filesystem> to get visibility to the exists() function
   //
   // Look for a prioritized list of database files in the current working directory to use
-  if     ( std::filesystem::exists( "Open Library Database-Full.dat"   ) )filename = "Open Library Database-Full.dat";  
-  else if( std::filesystem::exists( "Open Library Database-Large.dat"  ) )filename = "Open Library Database-Large.dat"; 
+  if     ( std::filesystem::exists( "Open Library Database-Full.dat"   ) )filename = "Open Library Database-Full.dat";
+  else if( std::filesystem::exists( "Open Library Database-Large.dat"  ) )filename = "Open Library Database-Large.dat";
   else if( std::filesystem::exists( "Open Library Database-Medium.dat" ) )filename = "Open Library Database-Medium.dat";
   else if( std::filesystem::exists( "Open Library Database-Small.dat"  ) )filename = "Open Library Database-Small.dat";
   else if( std::filesystem::exists( "Sample_Book_Database.dat"         ) )filename = "Sample_Book_Database.dat";
@@ -35,7 +40,7 @@ BookDatabase::BookDatabase( const std::string & filename )
 
   ///////////////////////// TO-DO (2) //////////////////////////////
     /// The file contains Books separated by whitespace.  A Book has 4 pieces of data delimited with a comma.  (This exactly matches
-    /// the previous assignment as to how Books are read) 
+    /// the previous assignment as to how Books are read)
     ///
     ///       Field            Type            Notes
     ///  1.   Book's ISBN      String          Unique identifier (primary key), always enclosed in double quotes
@@ -50,14 +55,18 @@ BookDatabase::BookDatabase( const std::string & filename )
     ///
     ///  Note: double quotes within the string are escaped with the backslash character
     ///
-
+    auto i = 0;
+    while (!fin.eof())
+    {
+      std::cin >> _book_database.at(i);
+      i++;
+    }
   /////////////////////// END-TO-DO (2) ////////////////////////////
 
   // Note:  The file is intentionally not explicitly closed.  The file is closed when fin goes out of scope - for whatever
   //        reason.  More precisely, the object named "fin" is destroyed when it goes out of scope and the file is closed in the
   //        destructor. See RAII
 }
-
 
 ///////////////////////// TO-DO (3) //////////////////////////////
   /// Implement the rest of the interface, including functions find (recursively) and size
@@ -66,4 +75,23 @@ BookDatabase::BookDatabase( const std::string & filename )
   ///                    depth of recursion may be greater than the program's function call stack size.  But for this programming
   ///                    exercise, getting familiar with recursion is a goal.
 
+Book * BookDatabase::find( const std::string & isbn )
+{
+  return find( isbn, _book_database.begin() );
+}
+
+Book * BookDatabase::find(const std::string & isbn, const std:: vector<Book>::iterator & index)
+{
+  if( index == _book_database.end() ) return nullptr;
+
+  else if( isbn == index->isbn()) {
+    return new Book(*index);
+  }
+
+  return find( isbn, index + 1 );
+}
+
+std::size_t BookDatabase::size() const {
+  return _book_database.size();
+}
 /////////////////////// END-TO-DO (3) ////////////////////////////

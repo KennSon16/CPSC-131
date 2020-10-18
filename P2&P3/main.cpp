@@ -25,7 +25,7 @@ namespace
     // First time called will bind parameters to copies
     static std::map<const std::stack<Book> *, std::stack<Book>> bookCarts = { { &sourceCart, {}            }, { &destinationCart, {}             }, { &spareCart, {}           } };
     static std::map<const std::stack<Book> *, std::string>      colLabels = { { &sourceCart, "Broken Cart" }, { &destinationCart, "Working Cart" }, { &spareCart, "Spare Cart" } };
-    
+
     // Interrogating the stacks is a destructive process, so local copies of the parameters are made to work with.  The
     // carefully_move_books algorithm will swap the order of the arguments passed to this functions, but they will always be the
     // same objects - just in different orders. When outputting the stack contents, keep the original order so we humans can trace
@@ -96,7 +96,20 @@ namespace
   {
     ///////////////////////// TO-DO (1) //////////////////////////////
       /// Implement the algorithm above.
+      if (quantity == 1) {
+        destinationCart.push( sourceCart.top() );
+        sourceCart.pop(); //preventing dupes
+        trace(sourceCart, destinationCart, spareCart);
 
+        return;
+      }
+      else {
+        carefully_move_books(quantity - 1, sourceCart, spareCart, destinationCart);
+        destinationCart.push( sourceCart.top() );
+        sourceCart.pop(); //preventing dupes
+        trace(sourceCart, destinationCart, spareCart);
+        carefully_move_books(quantity - 1, spareCart, destinationCart, sourceCart);
+      }
     /////////////////////// END-TO-DO (1) ////////////////////////////
   }
 
@@ -110,7 +123,9 @@ namespace
       /// cart while ensuring the breakable books are always on top of the nonbreakable books, just like they already are in the
       /// "from" cart.  That is, call the above carefully_move_books function to start moving books recursively.  Call the above
       /// trace function just before calling carefully_move_books to get a starting point reference in the movement report.
-
+      std::stack<Book> spareCart;
+      trace(from, to, spareCart);
+      carefully_move_books(from.size(), from, to, spareCart);
     /////////////////////// END-TO-DO (2) ////////////////////////////
   }
 }    // namespace
@@ -124,6 +139,7 @@ int main( int argc, char * argv[] )
   // Snag an empty cart as I enter the grocery store
   ///////////////////////// TO-DO (3) //////////////////////////////
     /// Create an empty book cart as a stack of books and call it myCart.
+ std::stack<Book> myCart;
 
   /////////////////////// END-TO-DO (3) ////////////////////////////
 
@@ -142,7 +158,17 @@ int main( int argc, char * argv[] )
     ///      0140444300       Les Mis             any
     ///      9780399576775    Eat pray love       Asher
     ///      9780545310581    Hunger Games        any                     <===  heaviest book, put this on the bottom
+    Book book1 ("Like the Animals", "Gordon Ramsy", "9780895656926", 69.00);
+    Book book2 ("131 Answer Key", "Leroy Jenkins", "54782169785", 131.00 );
+    Book book3 ("Les Mis", "Flo Rida", "0140444300", 15.50);
+    Book book4 ("Eat pray love", "Asher", "9780399576775", 4.20);
+    Book book5 ("Hunger Games", "Naruto", "9780545310581", 17.38);
 
+    myCart.push(book5);
+    myCart.push(book4);
+    myCart.push(book3);
+    myCart.push(book2);
+    myCart.push(book1);
   /////////////////////// END-TO-DO (4) ////////////////////////////
 
 
@@ -152,7 +178,8 @@ int main( int argc, char * argv[] )
   ///////////////////////// TO-DO (5) //////////////////////////////
     /// Create an empty book cart as a stack of books and call it workingCart.  Then carefully move the books in your
     /// broken cart to this working cart by calling the above carefully_move_books function with two arguments.
-
+    std::stack<Book> workingCart;
+    carefully_move_books(myCart, workingCart);
   /////////////////////// END-TO-DO (5) ////////////////////////////
 
 
@@ -162,7 +189,13 @@ int main( int argc, char * argv[] )
   ///////////////////////// TO-DO (6) //////////////////////////////
     /// Create an empty checkout counter as a queue of books and call it checkoutCounter.  Then remove the books
     /// from your working cart and place them on the checkout counter, i.e., put them in this checkoutCounter queue.
+    std::queue<Book> checkoutCounter;
 
+    while (!workingCart.empty())
+    {
+      checkoutCounter.push(workingCart.top());
+      workingCart.pop();
+    }
   /////////////////////// END-TO-DO (6) ////////////////////////////
 
 
@@ -178,17 +211,28 @@ int main( int argc, char * argv[] )
     /// found in the database then accumulate the amount due and print the book's full description and price on the receipt (i.e.
     /// write the book's full description and price to standard output).  Otherwise, print a message on the receipt that a
     /// description and price for the book wasn't found and there will be no charge.
-
+    while (!checkoutCounter.empty())
+    {
+      if ( storeDataBase.find(checkoutCounter.front().isbn() ) ){
+        std::cout << checkoutCounter.front() << std::endl;
+        amountDue = amountDue + checkoutCounter.front().price();
+        checkoutCounter.pop();
+      }
+      else {
+        std::cout << std::quoted(checkoutCounter.front().isbn()) << ", (" << checkoutCounter.front().title() << ")" << " not found, book is free!" << std::endl;
+        checkoutCounter.pop();
+      }
+    }
   /////////////////////// END-TO-DO (7) ////////////////////////////
 
 
 
   // Now check the receipt - are you getting charged the correct amount?
   // You can either pass the expected total when you run the program by supplying a parameter, like this:
-  //    program 35.89 
+  //    program 35.89
   // or if no expected results provided at the command line, then prompt for and obtain expected result from standard input
   double expectedAmmountDue = 0.0;
-  if( argc >= 2 )  
+  if( argc >= 2 )
     try
     {
       expectedAmmountDue = std::stod( argv[1] );
