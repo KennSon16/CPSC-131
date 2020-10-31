@@ -1,0 +1,8 @@
+"9780895656926", "Like the Animals", "Gordon Ramsy", 69
+"54782169785", (131 Answer Key) not found, book is free!
+"0140444300", "Les Mis", "Flo Rida", 15.5
+"9780399576775", "Eat pray love", "Asher", 4.2
+"9780545310581", "Hunger Games", "Naruto", 17.38
+What is your expected amount due?  106.08
+-------------------------
+Total  $106.08
