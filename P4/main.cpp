@@ -20,7 +20,7 @@ int main()
     ///////////////////////// TO-DO (1) //////////////////////////////
       /// Create your bookstore
       ///
-
+      Bookstore booksPlus;
     /////////////////////// END-TO-DO (1) ////////////////////////////
 
 
@@ -36,7 +36,7 @@ int main()
       /// There are several shoppers standing in line waiting to pay for the books in their shopping cart.  Process them all by
       /// passing the collection of shopping carts to your store's processCustomerShoppingCarts function.  This function will, for
       /// each shopper, scan all the books in their shopping cart, print a receipt with an amount due, deduct the items bought from
-      /// the store's inventory, and returns a collection of books sold.  
+      /// the store's inventory, and returns a collection of books sold.
       ///
 
     /////////////////////// END-TO-DO (3) ////////////////////////////
@@ -47,7 +47,7 @@ int main()
       /// especially all at once.  The inventory tells you how many of each item are currently on hand (i.e., in stock).
       ///
       /// The store's managers have decided to stop selling Wild Mammals (ISBN: 9802161748), so remove this from the store's
-      /// inventory. 
+      /// inventory.
       ///
 
     /////////////////////// END-TO-DO (4) ////////////////////////////
@@ -56,7 +56,7 @@ int main()
     ///////////////////////// TO-DO (5) //////////////////////////////
       /// All the shoppers have now checkout out and it's late in the day.  Close your store, take inventory, and if you sold enough
       /// books to fall below your re-order threshold, order more by using your store's reorderItems function passing the
-      /// collection of books sold. 
+      /// collection of books sold.
 
     /////////////////////// END-TO-DO (5) ////////////////////////////
   }

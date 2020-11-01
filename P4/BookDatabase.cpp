@@ -6,6 +6,7 @@
   #include <iostream>
   #include <fstream>
   #include <filesystem>
+  #include <iterator>
 /////////////////////// END-TO-DO (1) ////////////////////////////
 
 
@@ -58,11 +59,12 @@ BookDatabase::BookDatabase( const std::string & filename )
     // while (!fin.eof())
     // {
     //   std::cin >> _book_database.at(i);
+    //   _book_database.insert(dBook);
     //   i++;
     // }
     Book dBook;
     while (fin >> dBook){
-      _book_database.push_back(dBook);
+      _data.emplace(dBook.isbn(), dBook);
     }
   /////////////////////// END-TO-DO (2) ////////////////////////////
 
@@ -77,23 +79,36 @@ BookDatabase::BookDatabase( const std::string & filename )
   ///
   /// In function find, don't walk the collection from beginning to end (an O(n) operation), find the item with a binary search (an
   /// O(log n) operation)
-  Book * BookDatabase::find( const std::string & isbn )
-  {
-    return find( isbn, _book_database.begin() );
-  }
 
-  Book * BookDatabase::find(const std::string & isbn, const std:: vector<Book>::iterator & index)
-  {
-    if( index == _book_database.end() ) return nullptr;
+Book * BookDatabase::find(const std::string & isbn)
+{
+  auto low  = _data.begin();
+  auto it   = _data.find(isbn);
+  auto mid  = _data.begin();
+  auto high = _data.end();
+  int  size = _data.size();
+  advance(mid, size / 2);        // puts mid in the middle index
 
-    else if( isbn == index->isbn()) {
-      return new Book(*index);
+  while (*high >= *low)          // loop + dividing by 2 is log(n)
+  {
+    size = size / 2;           //
+    if ( *it > *mid )            // these if statements
+    {
+      low = mid.next();       // mid + 1
+      advance(mid,size);
     }
-
-    return find( isbn, index + 1 );
+    else if (*it < *mid)
+    {
+      high = mid.prev();      // changes high to mid - 1
+      advance(mid,-1 * size);
+    }
+    else
+    {
+      return *mid;
+    }
   }
+return nullptr;   // not found
+}
 
-  std::size_t BookDatabase::size() const {
-    return _book_database.size();
-  }
+
 /////////////////////// END-TO-DO (3) ////////////////////////////
