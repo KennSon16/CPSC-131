@@ -1,7 +1,10 @@
 ///////////////////////// TO-DO (1) //////////////////////////////
   /// Include necessary header files
   /// Hint:  Include what you use, use what you include
-
+#include "Book.hpp"
+#include "Bookstore.hpp"
+#include "BookDatabase.hpp"
+#include <string>
 /////////////////////// END-TO-DO (1) ////////////////////////////
 
 
@@ -17,14 +20,14 @@ Bookstore::Bookstore( const std::string & persistenyInventoryDB )
     /// The file's inventory contents consists of a quoted ISBN string followed by a quantity on hand unsigned integer separated by
     /// whitespace, like this:
     ///     "9861311467"	8
-    ///     "9794201189"    46 
-    ///     "9971691361"    35 
+    ///     "9794201189"    46
+    ///     "9971691361"    35
     ///     "9991137319"    9
     ///
     /// While no errors (eof, open failure, data type mismatch, etc,) detected, read the inventory record from the input stream and
     /// then add that information to the memory resident inventory database.
-    /// 
-    /// Hint: Extract the quoted string and the quantity 
+    ///
+    /// Hint: Extract the quoted string and the quantity
 
   /////////////////////// END-TO-DO (2) ////////////////////////////
 }                                                                 // File is closed as fin goes out of scope
@@ -61,18 +64,44 @@ Bookstore::BooksSold Bookstore::processCustomerShoppingCarts( const ShoppingCart
     /// hand for that book in the store's inventory.
     ///
     /// Hint:  Here's some pseudocode to get you started.  Create two loops, one nested inside the other, like this:
-    ///        1.     For each shopping cart 
+    ///        1.     For each shopping cart
+    for (auto i = shoppingCarts.cbegin(); i != shoppingCarts.cend(); ++i)
+    {
+      const auto & name = i->first;
+      const auto & cart = i->second;
     ///        1.1        Initialize the amount due to zero
+      double totalPrice = 0.0;
     ///        1.2        For each book in the customer's shopping cart
+      for (auto i = cart.cbegin(); i != cart.cend(); ++i)
+      {
+        const auto & isbn = i->first;
+        const auto & item = i->second;
     ///        1.2.1          If the book is not found in the database of all books in the world, indicate on the receipt it's free of charge
+          auto fullItemDesc = worldWideBookDatabase.find( isbn );
+          if (fullItemDesc == nullptr)
+          {
+            std::cout << std::quoted(isbn) << " " << std::quoted(book.title()) << " is not in database so it is free!" << \n;
+          }
     ///        1.2.2          Otherwise
+          else
+          {
     ///        1.2.2.1            Print the full description on the receipt
+            std::cout << *fullItemDesc << '\n';
     ///        1.2.2.2            Add the book's price to the amount due
+            totalPrice += fullItemDesc->price();
     ///        1.2.2.3            If the book is something the store sells (the item is in the store's inventory)
+              auto stockedItem = _inventoryDB.find(isbn);
+              if ( stockedItem != _inventoryDB.end())
+               {
     ///        1.2.2.3.1              Decrease the number of books on hand for the book sold
+                  --stockedItem->second;
     ///        1.2.2.3.2              Add the book's isbn to the list of books sold today
+                  todaysSales.insert( isbn )
+               }
+          }
     ///        1.3         Print the total amount due on the receipt
-
+    std::cout << '\t' << std::string(25, '-') << '\n'
+              << '\t' << "Total $" << totalPrice << '\n';
   /////////////////////// END-TO-DO (3) ////////////////////////////
 
   return todaysSales;
@@ -93,17 +122,17 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
   ///////////////////////// TO-DO (4) //////////////////////////////
     /// For each product that has fallen below the reorder threshold, assume an order has been placed and now the shipment has
     /// arrived. Update the store's inventory to reflect the additional items on hand.
-    ///   
-    /// Hint:  Here's some pseudocode to get you started.  
+    ///
+    /// Hint:  Here's some pseudocode to get you started.
     ///        1       For each book sold today
     ///        1.1         If the book is not in the store's inventory or if the number of books on hand has fallen below the re-order threshold
-    ///        1.1.1           If the book is not in the database of all books in the world, 
+    ///        1.1.1           If the book is not in the database of all books in the world,
     ///        1.1.1.1             display just the ISBN
-    ///        1.1.2           Otherwise, 
+    ///        1.1.2           Otherwise,
     ///        1.1.2.1             display the book's full description
-    ///        1.1.3           If the book is not in the store's inventory 
+    ///        1.1.3           If the book is not in the store's inventory
     ///        1.1.3.1             display a notice indicating the book no longer sold in this store and will not be re-ordered
-    ///        1.1.4           Otherwise, 
+    ///        1.1.4           Otherwise,
     ///        1.1.4.1             Display the current quantity on hand and the quantity re-ordered
     ///        1.1.4.2             Increase the quantity on hand by the number of items ordered and received (LOT_COUNT)
     ///        2       Reset the list of book sold today so the list can be reused again later
@@ -124,12 +153,12 @@ Bookstore::ShoppingCarts Bookstore::makeShoppingCarts()
   ShoppingCarts carts =
   {
     // first shopping cart
-    { "Red Baron", { {"9789999995641", {"Mgt styles"                 }}, 
-                     {"9991137319"   , {"Grasses of U of L"          }}, 
-                     {"9789999513104", {"Computer Impact on Children"}}, 
-                     {"54782169785"  , {"131 Answer Key"             }}, 
-                     {"9792430091"   , {"Fiqh & manajemen"           }}, 
-                     {"9991130306"   , {"Birds Atlas"                }} 
+    { "Red Baron", { {"9789999995641", {"Mgt styles"                 }},
+                     {"9991137319"   , {"Grasses of U of L"          }},
+                     {"9789999513104", {"Computer Impact on Children"}},
+                     {"54782169785"  , {"131 Answer Key"             }},
+                     {"9792430091"   , {"Fiqh & manajemen"           }},
+                     {"9991130306"   , {"Birds Atlas"                }}
                    }
     },
 
