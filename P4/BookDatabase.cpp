@@ -109,16 +109,18 @@ BookDatabase::BookDatabase( const std::string & filename )
 //   }
 // return nullptr;   // not found
 // }
-Book * BookDatabase::find(const std::string & isbn)
+Book * BookDatabase::find( const std::string & isbn )
 {
-  if (_data.find(isbn) )
-  {
-    return _data.find(isbn);
-  }
-  else
-  {
-    return nullptr;
-  }
+  auto the_book = _data.find(isbn);
+  if (the_book == _data.end()) return nullptr;
+  auto * new_book_ptr = new Book (the_book->second);
+  return (new_book_ptr);
 }
+
+std::size_t BookDatabase::size() const
+{
+  return _data.size();
+}
+
 
 /////////////////////// END-TO-DO (3) ////////////////////////////

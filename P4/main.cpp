@@ -28,7 +28,7 @@ int main()
       /// Now, let's pretend your bookstore is busy with several shoppers, each pushing a shopping cart filled with a bunch of books
       /// by using your store's makeShoppingCarts function to create a collection of shopping carts.
       ///
-
+      ShoppingCarts shoppers = makeShoppingCarts();
     /////////////////////// END-TO-DO (2) ////////////////////////////
 
 
@@ -38,7 +38,7 @@ int main()
       /// each shopper, scan all the books in their shopping cart, print a receipt with an amount due, deduct the items bought from
       /// the store's inventory, and returns a collection of books sold.
       ///
-
+      processCustomerShoppingCarts()
     /////////////////////// END-TO-DO (3) ////////////////////////////
 
 
