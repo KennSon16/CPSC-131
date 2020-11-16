@@ -39,7 +39,7 @@ int main()
       /// each shopper, scan all the books in their shopping cart, print a receipt with an amount due, deduct the items bought from
       /// the store's inventory, and returns a collection of books sold.
       ///
-      auto totalToday = booksPlus.processCustomerShoppingCarts(shoppers);
+      Bookstore::BooksSold totalToday = booksPlus.processCustomerShoppingCarts(shoppers);
     /////////////////////// END-TO-DO (3) ////////////////////////////
 
 
@@ -50,8 +50,7 @@ int main()
       /// The store's managers have decided to stop selling Wild Mammals (ISBN: 9802161748), so remove this from the store's
       /// inventory.
       ///
-      booksPlus.inventory();
-      booksPlus.erase("9802161748");
+      booksPlus.inventory().erase("9802161748");
     /////////////////////// END-TO-DO (4) ////////////////////////////
 
 
@@ -60,7 +59,7 @@ int main()
       /// books to fall below your re-order threshold, order more by using your store's reorderItems function passing the
       /// collection of books sold.
       std::cout << "Closing Store..." << '\n';
-      inventoryDB.reorderItems(totalToday);
+      booksPlus.reorderItems(totalToday);
     /////////////////////// END-TO-DO (5) ////////////////////////////
   }
 

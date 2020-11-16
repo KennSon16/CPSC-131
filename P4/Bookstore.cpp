@@ -81,39 +81,41 @@ Bookstore::BooksSold Bookstore::processCustomerShoppingCarts( const ShoppingCart
       const auto & cart = i->second;
     ///        1.1        Initialize the amount due to zero
       double totalPrice = 0.0;
+      std::cout << name << "\'s cart:" << '\n';
     ///        1.2        For each book in the customer's shopping cart
       for (auto j = cart.cbegin(); j != cart.cend(); ++j)
       {
         const auto & isbn = j->first;
         const auto & item = j->second;
     ///        1.2.1          If the book is not found in the database of all books in the world, indicate on the receipt it's free of charge
-          auto fullItemDesc = worldWideBookDatabase.find( isbn );
-          if (fullItemDesc == nullptr)
-          {
-            std::cout << std::quoted(isbn) << " " << std::quoted(item.title()) << " is not in database so it is free!" << "\n";
-          }
+        auto fullItemDesc = worldWideBookDatabase.find( isbn );
+        if (fullItemDesc == nullptr)
+        {
+          std::cout << std::quoted(isbn) << " " << std::quoted(item.title()) << " is not in database so it is free!" << "\n";
+        }
     ///        1.2.2          Otherwise
-          else
-          {
+        else
+        {
     ///        1.2.2.1            Print the full description on the receipt
-            std::cout << *fullItemDesc << '\n';
+          std::cout << *fullItemDesc << '\n';
     ///        1.2.2.2            Add the book's price to the amount due
-            totalPrice += fullItemDesc->price();
+          totalPrice += fullItemDesc->price();
     ///        1.2.2.3            If the book is something the store sells (the item is in the store's inventory)
-              auto stockedItem = _inventoryDB.find(isbn);
-              if ( stockedItem != _inventoryDB.end())
-               {
+          auto stockedItem = _inventoryDB.find(isbn);
+          if ( stockedItem != _inventoryDB.end())
+          {
     ///        1.2.2.3.1              Decrease the number of books on hand for the book sold
-                  --stockedItem->second;
+            --stockedItem->second;
     ///        1.2.2.3.2              Add the book's isbn to the list of books sold today
-                  todaysSales.insert( isbn );
-               }
+            todaysSales.insert( isbn );
           }
+        }
+      }
     ///        1.3         Print the total amount due on the receipt
     std::cout << '\t' << std::string(25, '-') << '\n'
               << '\t' << "Total $" << totalPrice << '\n';
+    }
   /////////////////////// END-TO-DO (3) ////////////////////////////
-
   return todaysSales;
 } // processCustomerShoppingCarts
 
@@ -135,18 +137,19 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
     ///
     /// Hint:  Here's some pseudocode to get you started.
     ///        1       For each book sold today
-    auto i = todaysSales.cbegin();
-    while(i != todaysSales.cend())
+    //for (auto i = todaysSales.cbegin(); i != todaysSales.cend(); ++i)
+    for (const auto & i:todaysSales)
     {
+      const auto & isbnKey = i;
     ///        1.1         If the book is not in the store's inventory or if the number of books on hand has fallen below the re-order threshold
-      if(_inventoryDB.find(i) == nullptr || _inventoryDB[i] < 15)
+      if(_inventoryDB.find(*isbnKey) == nullptr || _inventoryDB[isbnKey] < 15)
     ///        1.1.1           If the book is not in the database of all books in the world,
       {
-        auto disBook = worldWideBookDatabase.find(i);
-        if(worldWideBookDatabase.find(i) == nullptr)
+        auto disBook = worldWideBookDatabase.find(isbnKey);
+        if(disBook == nullptr)
     ///        1.1.1.1             display just the ISBN
         {
-          std::cout << std::qouted(i) << '\n';
+          std::cout << std::quoted(isbnKey) << '\n';
         }
     ///        1.1.2           Otherwise,
         else
@@ -155,8 +158,10 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
           std::cout << * disBook;
         }
     ///        1.1.3           If the book is not in the store's inventory
-        auto oldBook = _inventoryDB.find(i);
-        if (_inventoryDB.find(i) == nullptr )
+        auto oldBook = _inventoryDB.find(isbnKey);
+        auto currentQuantity = _inventoryDB[isbnKey];
+        auto reorderQuantity = _inventoryDB[isbnKey];
+        if (_inventoryDB.find(*isbnKey) == nullptr )
     ///        1.1.3.1             display a notice indicating the book no longer sold in this store and will not be re-ordered
         {
         std::cout << std::quoted(oldBook) << " will no longer be sold in this store and will not be re-ordered!!!"
@@ -164,23 +169,18 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
     ///        1.1.4           Otherwise,
         else
         {
-          auto currentQuantity = _inventoryDB[i];
-          if (inventoryBD[i] < REORDER_THRESHOLD)
+          if (_inventoryDB[isbnKey] >= REORDER_THRESHOLD)
           {
-            auto reorderQuantity = REORDER_THRESHOLD - _inventoryDB[i];
-          }
-          else
-          {
-            auto reorderQuantity = 0;
+            reorderQuantity = 0;
           }
     ///        1.1.4.1             Display the current quantity on hand and the quantity re-ordered
           std::cout << "Current quantity: " << currentQuantity << "     " << "Reordering " << reorderQuantity << " more! \n";
         }
     ///        1.1.4.2             Increase the quantity on hand by the number of items ordered and received (LOT_COUNT)
-        _inventoryDB[i] = LOT_COUNT + currentQuantity;
+        _inventoryDB[isbnKey] = LOT_COUNT + currentQuantity;
     ///        2       Reset the list of book sold today so the list can be reused again later
       }
-      i++;
+      // i++;
     }
     todaysSales.clear();
   /////////////////////// END-TO-DO (4) ////////////////////////////
