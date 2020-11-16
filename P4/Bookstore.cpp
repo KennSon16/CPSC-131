@@ -113,7 +113,7 @@ Bookstore::BooksSold Bookstore::processCustomerShoppingCarts( const ShoppingCart
       }
     ///        1.3         Print the total amount due on the receipt
     std::cout << '\t' << std::string(25, '-') << '\n'
-              << '\t' << "Total $" << totalPrice << '\n';
+              << '\t' << "Total $" << totalPrice << '\n' << '\n';
     }
   /////////////////////// END-TO-DO (3) ////////////////////////////
   return todaysSales;
@@ -137,50 +137,53 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
     ///
     /// Hint:  Here's some pseudocode to get you started.
     ///        1       For each book sold today
-    //for (auto i = todaysSales.cbegin(); i != todaysSales.cend(); ++i)
+    unsigned int counter = 1;
     for (const auto & i:todaysSales)
     {
-      const auto & isbnKey = i;
+      // std::cout << "Before first if " << i << std::endl;
+      // std::cout << _inventoryDB.count(i) << std::endl;
+      // std::cout << (_inventoryDB.find(i) == _inventoryDB.end()) << std::endl;
+      //const auto isbnKey = i;
     ///        1.1         If the book is not in the store's inventory or if the number of books on hand has fallen below the re-order threshold
-      if(_inventoryDB.find(*isbnKey) == nullptr || _inventoryDB[isbnKey] < 15)
+      if( inventory().find(i) == _inventoryDB.end() || _inventoryDB[i] < 15)
     ///        1.1.1           If the book is not in the database of all books in the world,
       {
-        auto disBook = worldWideBookDatabase.find(isbnKey);
+        auto disBook = worldWideBookDatabase.find(i);
         if(disBook == nullptr)
     ///        1.1.1.1             display just the ISBN
         {
-          std::cout << std::quoted(isbnKey) << '\n';
+          std::cout << std::quoted(i) << '\n';
         }
     ///        1.1.2           Otherwise,
         else
         {
     ///        1.1.2.1             display the book's full description
-          std::cout << * disBook;
+          std::cout << counter << ": {" << * disBook << "}" << '\n';
         }
     ///        1.1.3           If the book is not in the store's inventory
-        auto oldBook = _inventoryDB.find(isbnKey);
-        auto currentQuantity = _inventoryDB[isbnKey];
-        auto reorderQuantity = _inventoryDB[isbnKey];
-        if (_inventoryDB.find(*isbnKey) == nullptr )
+        //auto currentQuantity = _inventoryDB[i];
+
+        // std::cout << "Before second if " << i << std::endl;
+        // std::cout << _inventoryDB.count(i) << std::endl;
+        // std::cout << (_inventoryDB.find(i) == _inventoryDB.end()) << std::endl;
+
+        if (_inventoryDB.find(i) == _inventoryDB.end() )
     ///        1.1.3.1             display a notice indicating the book no longer sold in this store and will not be re-ordered
         {
-        std::cout << std::quoted(oldBook) << " will no longer be sold in this store and will not be re-ordered!!!"
+        std::cout << "Book detected with the ISBN:" << std::quoted(i) << " will no longer be sold in this store and will not be re-ordered!!!" << '\n';
         }
     ///        1.1.4           Otherwise,
-        else
+        else if (_inventoryDB[i] < REORDER_THRESHOLD)
         {
-          if (_inventoryDB[isbnKey] >= REORDER_THRESHOLD)
-          {
-            reorderQuantity = 0;
-          }
     ///        1.1.4.1             Display the current quantity on hand and the quantity re-ordered
-          std::cout << "Current quantity: " << currentQuantity << "     " << "Reordering " << reorderQuantity << " more! \n";
-        }
+          auto currentQuantity = _inventoryDB[i];
+          std::cout << "Current quantity: " << currentQuantity << '\n' << "Reordering " << LOT_COUNT << " more! \n";
+          counter++;
     ///        1.1.4.2             Increase the quantity on hand by the number of items ordered and received (LOT_COUNT)
-        _inventoryDB[isbnKey] = LOT_COUNT + currentQuantity;
+          _inventoryDB[i] = LOT_COUNT + currentQuantity;
+        }
     ///        2       Reset the list of book sold today so the list can be reused again later
       }
-      // i++;
     }
     todaysSales.clear();
   /////////////////////// END-TO-DO (4) ////////////////////////////

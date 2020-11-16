@@ -50,7 +50,9 @@ int main()
       /// The store's managers have decided to stop selling Wild Mammals (ISBN: 9802161748), so remove this from the store's
       /// inventory.
       ///
+
       booksPlus.inventory().erase("9802161748");
+
     /////////////////////// END-TO-DO (4) ////////////////////////////
 
 
@@ -59,6 +61,8 @@ int main()
       /// books to fall below your re-order threshold, order more by using your store's reorderItems function passing the
       /// collection of books sold.
       std::cout << "Closing Store..." << '\n';
+      std::cout << "Reordering books in low stock!" << '\n';
+
       booksPlus.reorderItems(totalToday);
     /////////////////////// END-TO-DO (5) ////////////////////////////
   }
