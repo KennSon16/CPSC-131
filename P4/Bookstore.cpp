@@ -165,7 +165,14 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
         else
         {
           auto currentQuantity = _inventoryDB[i];
-          auto reorderQuantity = REORDER_THRESHOLD - _inventoryDB[i];
+          if (inventoryBD[i] < REORDER_THRESHOLD)
+          {
+            auto reorderQuantity = REORDER_THRESHOLD - _inventoryDB[i];
+          }
+          else
+          {
+            auto reorderQuantity = 0;
+          }
     ///        1.1.4.1             Display the current quantity on hand and the quantity re-ordered
           std::cout << "Current quantity: " << currentQuantity << "     " << "Reordering " << reorderQuantity << " more! \n";
         }
@@ -173,8 +180,9 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
         _inventoryDB[i] = LOT_COUNT + currentQuantity;
     ///        2       Reset the list of book sold today so the list can be reused again later
       }
-      delete
+      i++;
     }
+    todaysSales.clear();
   /////////////////////// END-TO-DO (4) ////////////////////////////
 }
 
