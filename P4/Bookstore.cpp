@@ -140,10 +140,6 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
     unsigned int counter = 1;
     for (const auto & i:todaysSales)
     {
-      // std::cout << "Before first if " << i << std::endl;
-      // std::cout << _inventoryDB.count(i) << std::endl;
-      // std::cout << (_inventoryDB.find(i) == _inventoryDB.end()) << std::endl;
-      //const auto isbnKey = i;
     ///        1.1         If the book is not in the store's inventory or if the number of books on hand has fallen below the re-order threshold
       if( inventory().find(i) == _inventoryDB.end() || _inventoryDB[i] < 15)
     ///        1.1.1           If the book is not in the database of all books in the world,
@@ -161,12 +157,6 @@ void Bookstore::reorderItems( BooksSold & todaysSales )
           std::cout << counter << ": {" << * disBook << "}" << '\n';
         }
     ///        1.1.3           If the book is not in the store's inventory
-        //auto currentQuantity = _inventoryDB[i];
-
-        // std::cout << "Before second if " << i << std::endl;
-        // std::cout << _inventoryDB.count(i) << std::endl;
-        // std::cout << (_inventoryDB.find(i) == _inventoryDB.end()) << std::endl;
-
         if (_inventoryDB.find(i) == _inventoryDB.end() )
     ///        1.1.3.1             display a notice indicating the book no longer sold in this store and will not be re-ordered
         {
