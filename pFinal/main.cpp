@@ -161,7 +161,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (1) //////////////////////////////
           /// Write the line of code to insert "book" at the back of the data structure under test
-
+        dataStructureUnderTest.push_back(book);
         /////////////////////// END-TO-DO (1) ////////////////////////////
 
       } );
@@ -174,7 +174,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (2) //////////////////////////////
           /// Write the line of code to insert "book" at the beginning of the data structure under test
-
+        dataStructureUnderTest.insert(dataStructureUnderTest.begin(), book);
         /////////////////////// END-TO-DO (2) ////////////////////////////
 
       } );
@@ -187,7 +187,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (3) //////////////////////////////
           /// Write the line of code to remove the back element of the data structure under test
-
+          dataStructureUnderTest.pop_back();
         /////////////////////// END-TO-DO (3) ////////////////////////////
 
       }, Direction::Shrink );
@@ -200,7 +200,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (4) //////////////////////////////
           /// Write the line of code to remove the beginning element from the data structure under test
-
+        dataStructureUnderTest.erase(dataStructureUnderTest.begin());
         /////////////////////// END-TO-DO (4) ////////////////////////////
 
       }, Direction::Shrink );
@@ -216,7 +216,11 @@ namespace    // unnamed, anonymous namespace
           /// Write the lines of code (approximately 3 or 4) to search for the Book within the data structure under test with a ISBN
           /// matching "target_isbn".  Return a pointer to the book immediately upon finding it, or a null pointer when you know the
           /// book is not in the container.
-
+        for (unsigned long int i = 0; i < dataStructureUnderTest.size(); ++i)
+        {
+          if (dataStructureUnderTest.at(i).isbn() == target_isbn) return & dataStructureUnderTest.at(i);
+        }
+        return nullptr;
         /////////////////////// END-TO-DO (5) ////////////////////////////
 
       } );
@@ -241,7 +245,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (6) //////////////////////////////
           /// Write the line of code to insert "book" at the back of the data structure under test
-
+        dataStructureUnderTest.push_back(book);
         /////////////////////// END-TO-DO (6) ////////////////////////////
 
       } );
@@ -254,7 +258,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (7) //////////////////////////////
           /// Write the line of code to insert "book" at the beginning of the data structure under test
-
+        dataStructureUnderTest.push_front(book);
         /////////////////////// END-TO-DO (7) ////////////////////////////
 
       } );
@@ -267,7 +271,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (8) //////////////////////////////
           /// Write the line of code to remove the back element of the data structure under test
-
+        dataStructureUnderTest.pop_back();
         /////////////////////// END-TO-DO (8) ////////////////////////////
 
       }, Direction::Shrink );
@@ -280,7 +284,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (9) //////////////////////////////
           /// Write the line of code to remove the front element from the data structure under test
-
+        dataStructureUnderTest.pop_front();
         /////////////////////// END-TO-DO (9) ////////////////////////////
 
       }, Direction::Shrink );
@@ -296,7 +300,11 @@ namespace    // unnamed, anonymous namespace
           /// Write the lines of code (approximately 3 or 4) to search for the Book within the data structure under test with a ISBN
           /// matching "target_isbn".  Return a pointer to the book immediately upon finding it, or a null pointer when you know the
           /// book is not in the container.
-
+        for (auto i = dataStructureUnderTest.begin(); i != dataStructureUnderTest.end() ; ++i)
+        {
+          if ( i->isbn() == target_isbn ) return &(*i);
+        }
+        return nullptr;
         /////////////////////// END-TO-DO (10) ////////////////////////////
 
       } );
@@ -323,7 +331,12 @@ namespace    // unnamed, anonymous namespace
           /// Write the lines of code (approximately 3 or 4) to insert "book" after the last node of the data structure under test.
           /// Since the SLL has no size() function and no tail pointer, you must walk the list looking for the last node.
           ///Hint:  Do not attempt to insert after "end()"
-
+        std::forward_list<Book>::iterator current = dataStructureUnderTest.begin();
+        while (std::next(current, 1) != dataStructureUnderTest.end())
+        {
+          std::advance(current, 1);
+        }
+        dataStructureUnderTest.emplace_after(current, book);
         /////////////////////// END-TO-DO (11) ////////////////////////////
 
       } );
@@ -336,7 +349,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (12) //////////////////////////////
           /// Write the line of code to insert "book" at the front of the data structure under test
-
+          dataStructureUnderTest.push_front(book);
         /////////////////////// END-TO-DO (12) ////////////////////////////
 
       } );
@@ -352,14 +365,21 @@ namespace    // unnamed, anonymous namespace
           /// has no size() function and no tail pointer, you must walk the list looking for the last node.
           ///
           /// Hint:  If the data structure under test is empty, simply return.  Otherwise
+        if ( dataStructureUnderTest.empty() ) return;
           ///        o) Define two iterators called predecessor and current.  Initialize predecessor to the node before the
           ///           beginning, and current to the node at the beginning
+        std::forward_list<Book>::iterator current      = dataStructureUnderTest.begin();
+        std::forward_list<Book>::iterator predecessor  = dataStructureUnderTest.before_begin();
           ///        o) Walk the list until current's next iterator is equal to end() and advance both predecessor and current each
           ///           time through the loop
+        while ( std::next(current, 1) != dataStructureUnderTest.cbegin() )
+        {
+          std::advance(current     , 1);
+          std::advance(predecessor , 1);
+        }
           ///        o) Once current's next node is equal to end(), then erase the node after predecessor
-
+        dataStructureUnderTest.erase_after(predecessor);
         /////////////////////// END-TO-DO (13) ////////////////////////////
-
       }, Direction::Shrink );
     }
 
@@ -370,7 +390,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (14) //////////////////////////////
           /// Write the line of code to remove the front element from the data structure under test
-
+        dataStructureUnderTest.pop_front();
         /////////////////////// END-TO-DO (14) ////////////////////////////
 
       }, Direction::Shrink );
@@ -386,7 +406,11 @@ namespace    // unnamed, anonymous namespace
           /// Write the lines of code (approximately 3 or 4) to search for the Book within the data structure under test with a ISBN
           /// matching "target_isbn".   Return a pointer to the book immediately upon finding it, or a null pointer when you know
           /// the book is not in the container.
-
+          for (auto i = dataStructureUnderTest.begin(); i != dataStructureUnderTest.end() ; ++i)
+          {
+            if ( i->isbn() == target_isbn ) return &(*i);
+          }
+          return nullptr;
         /////////////////////// END-TO-DO (15) ////////////////////////////
 
       } );
@@ -413,7 +437,7 @@ namespace    // unnamed, anonymous namespace
         ///////////////////////// TO-DO (16) //////////////////////////////
           /// Write the line of code to insert the key (ISBN) and value (book) into the data structure under test.  You may use
           /// either the subscript operator, emplace, or insert function.
-
+        dataStructureUnderTest.emplace(book.isbn(), book);
         /////////////////////// END-TO-DO (16) ////////////////////////////
 
       } );
@@ -427,7 +451,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (17) //////////////////////////////
           /// Write the line of code to remove from the data structure under test the node that matches book's ISBN
-
+        dataStructureUnderTest.erase(book.isbn());
         /////////////////////// END-TO-DO (17) ////////////////////////////
 
       }, Direction::Shrink );
@@ -444,7 +468,10 @@ namespace    // unnamed, anonymous namespace
           /// matching "target_isbn".  Return a pointer to the book immediately upon finding it, or a null pointer when you know the
           /// book is not in the container.
           /// Note: do not implement a linear search, i.e., do not loop from beginning to end.
-
+        auto it = dataStructureUnderTest.find(target_isbn);
+        if(it == dataStructureUnderTest.end()) return nullptr;
+        if(it->second.isbn() == target_isbn) return &(it->second);
+        return nullptr; //./project_\(g++\).exe < "Open Library Database-Large.dat" | tee output.txt
         /////////////////////// END-TO-DO (18) ////////////////////////////
 
       } );
@@ -471,7 +498,7 @@ namespace    // unnamed, anonymous namespace
         ///////////////////////// TO-DO (19) //////////////////////////////
           /// Write the line of code to insert the key (ISBN) and value (book) into the data structure under test.  You may use
           /// either the subscript operator, emplace, or insert function.
-
+        dataStructureUnderTest.emplace(book.isbn(), book);
         /////////////////////// END-TO-DO (19) ////////////////////////////
 
       } );
@@ -485,7 +512,7 @@ namespace    // unnamed, anonymous namespace
 
         ///////////////////////// TO-DO (20) //////////////////////////////
           /// Write the line of code to remove from the data structure under test the node that matches book's ISBN
-
+        dataStructureUnderTest.erase(book.isbn());
         /////////////////////// END-TO-DO (20) ////////////////////////////
 
       }, Direction::Shrink );
@@ -502,7 +529,13 @@ namespace    // unnamed, anonymous namespace
           /// matching "target_isbn".  Return a pointer to the book immediately upon finding it, or a null pointer when you know the
           /// book is not in the container.
           /// Note: do not implement a linear search, i.e., do not loop from beginning to end.
-
+          // auto it = dataStructureUnderTest.find(target_isbn);
+          // if(it == dataStructureUnderTest.end()) return nullptr;
+          // if(dataStructureUnderTest.at(it).isbn() == target_isbn) return &(it->second);
+          // return nullptr;
+          auto it = dataStructureUnderTest.find(target_isbn);
+          if( it != dataStructureUnderTest.end()) return &(it->second);
+          return nullptr;
         /////////////////////// END-TO-DO (21) ////////////////////////////
 
       } );
@@ -530,7 +563,7 @@ namespace    // unnamed, anonymous namespace
     measure( structureName, operationDescription, noop, operation, direction );
   }
 
-  
+
   // Template function to measure the elapsed time consumed to perform a container's operation
   template<class Operation, class Preamble>
   void measure( const std::string & structureName,                            // free text name of data structure being measured
