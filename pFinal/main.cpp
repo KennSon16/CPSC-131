@@ -330,7 +330,6 @@ namespace    // unnamed, anonymous namespace
           /// Write the lines of code (approximately 3 or 4) to insert "book" after the last node of the data structure under test.
           /// Since the SLL has no size() function and no tail pointer, you must walk the list looking for the last node.
           ///Hint:  Do not attempt to insert after "end()"
-        std::clog << "SLL 1" << '\n';
         auto before_current = dataStructureUnderTest.before_begin();
         for (auto current = dataStructureUnderTest.begin(); current != dataStructureUnderTest.end(); ++current) {
           ++before_current;
@@ -360,7 +359,6 @@ namespace    // unnamed, anonymous namespace
         ///////////////////////// TO-DO (12) //////////////////////////////
           /// Write the line of code to insert "book" at the front of the data structure under test
           dataStructureUnderTest.push_front(book);
-          std::clog << "SLL 2" << '\n';
         /////////////////////// END-TO-DO (12) ////////////////////////////
 
       } );
@@ -391,7 +389,6 @@ namespace    // unnamed, anonymous namespace
         // for (auto & a : dataStructureUnderTest)
           ///        o) Once current's next node is equal to end(), then erase the node after predecessor
         dataStructureUnderTest.erase_after(predecessor);
-        std::clog << "SLL 3" << '\n';
         /////////////////////// END-TO-DO (13) ////////////////////////////
       }, Direction::Shrink );
     }
@@ -404,7 +401,6 @@ namespace    // unnamed, anonymous namespace
         ///////////////////////// TO-DO (14) //////////////////////////////
           /// Write the line of code to remove the front element from the data structure under test
         dataStructureUnderTest.pop_front();
-        std::clog << "SLL 4" << '\n';
         /////////////////////// END-TO-DO (14) ////////////////////////////
 
       }, Direction::Shrink );
@@ -425,7 +421,6 @@ namespace    // unnamed, anonymous namespace
             if ( i->isbn() == target_isbn ) return &(*i);
           }
           return nullptr;
-          std::clog << "SLL 5" << '\n';
         /////////////////////// END-TO-DO (15) ////////////////////////////
 
       } );
