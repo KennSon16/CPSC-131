@@ -2,16 +2,31 @@
 
 #include "IntegerLinkedList.h"
 
-bool IntegerLinkedList::checkList() {
-  // COMPLETE THIS FOR PROBLEM 2
-  return true;// dummy value to stop warnings while doing Problem 3. Remove this line.
-
+int IntegerLinkedList::count(int compare) {
+  int counter = 1;
+  SNode *temp = head;
+  while (temp != nullptr)
+  {
+    if (temp->elem == compare) break;
+    temp = temp->next;
+    counter++;
+  }
+  return counter;
 }
 
-bool IntegerLinkedList::checkRecurse (SNode *ptr) {
-  // COMPLETE THIS FOR PROBLEM 3
-  return true;// dummy value to stop warnings while doing Problem 2. Remove this line.
+// COMPLETE THIS FOR PROBLEM 2
 
+
+int IntegerLinkedList::countRecurse (SNode *ptr, int compare) {
+  if(ptr == nullptr)
+  {
+    return 0; //base case if not found
+  }
+  if(ptr->elem == compare)
+  {
+    return countRecurse(ptr->next, compare) + 1;
+  }
+  return countRecurse(ptr->next, compare);
 }
 
 void IntegerLinkedList::addFront(int x) {
@@ -22,6 +37,6 @@ void IntegerLinkedList::addFront(int x) {
 }
 
 // recursion helper function called from main for PROBLEM 3
-bool IntegerLinkedList::checkRecurseHelper () {
-  return checkRecurse(head);
+int IntegerLinkedList::countRecurseHelper (int compare) {
+  return countRecurse(head, compare);
 }
