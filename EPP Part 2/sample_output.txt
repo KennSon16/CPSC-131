@@ -1,0 +1,55 @@
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: S
+Enter id: 10
+Enter name: Under10
+Is a graduate? (Y for graduate/N for undergraduate): N
+
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: S
+Enter id: 15
+Enter name: Under15
+Is a graduate? (Y for graduate/N for undergraduate): N
+
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: S
+Enter id: 20
+Enter name: Grad20
+Is a graduate? (Y for graduate/N for undergraduate): Y
+
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: E
+        Enrolling graduate student: Grad20 (20)
+		
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: E
+        Enrolling undergraduate student: Under10 (10)
+		
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: P
+List of enrolled students:
+        Grad20 (20)
+        Under10 (10)
+		
+S: sign-up
+E: enroll
+P: print
+Q: quit
+Enter choice: Q

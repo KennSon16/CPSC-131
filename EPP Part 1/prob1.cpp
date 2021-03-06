@@ -4,10 +4,33 @@
 using namespace std;
 
 // Implement printArray here
-
+void printArray(int userArray[], int index )
+{
+  for (auto i = 0; i < index; i++)
+  {
+    cout << userArray[i] << " ";
+  }
+    cout << endl;
+  return;
+}
 
 // Implement getElement here
-
+int getElement(int userArray[], int index )
+{
+  int max = userArray[0];
+  int min = userArray[0];
+  for (auto i = 0; i < index; i++)
+  {
+    if (userArray[i] > max) max = userArray[i];
+    if (userArray[i] < min) min = userArray[i];
+  }
+  int secMax = min;
+  for (auto i = 0; i < index; i++)
+  {
+    if (userArray[i] > secMax && userArray[i] != max) secMax = userArray[i];
+  }
+  return secMax;
+}
 
 // EDIT CODE BELOW ONLY FOR TESTING (YOUR CODE WILL BE GRADED WITH DIFFERENT TESTS)
 

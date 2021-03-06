@@ -1,0 +1,6 @@
+Mendocino_County 2016 87628
+San_Francisco_County 2016 870887
+Mendocino_County 2014 88545
+Mendocino_County 2018 88875
+San_Francisco_County 2015 864816
+Orange_County 2018 3215372
